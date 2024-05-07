@@ -1,8 +1,9 @@
 const House = require('../model/house')
-const User = require('../models/user'); 
+const User = require('../model/user')
 const moment = require('moment');
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
+const Booking = require('../model/booking');
 
 const createHouse = async(req, res) => {
     try {
@@ -104,14 +105,46 @@ const checkAvailability = async(req, res) => {
     try {
         console.log(req.query);
         const { startDateTime, endDateTime } = req.query;
+        console.log(startDateTime,endDateTime,"...")
 
-        const overlappingGuestHouses = await House.findAll({
+        const overlappingGuestHouses = await Booking.findAll({
             where: {
                 
-                startDateTime: {
+                startDate: {
                     [Op.lte]: moment(endDateTime.toString()).format("YYYY-MM-DD HH:mm:ss"),
                 },
-                endDateTime: {
+                endDate: {
+                    [Op.gte]: moment(startDateTime.toString()).format("YYYY-MM-DD HH:mm:ss"),
+                },
+            },
+           
+        });
+
+        if (overlappingGuestHouses.length === 0) {
+            res.status(200).json({ message: "The slot is available", overlappingGuestHouses: [] });
+        } else {
+            res.status(200).json({ message: "The slot is not available", overlappingGuestHouses });
+        }
+    } catch (error) {
+        res.status(200).json({ message: "An error occurred", error: error.message });
+    }
+};
+
+
+const checkAvailabilityHouse = async(req, res) => {
+    try {
+        console.log(req.params);
+        const { startDateTime, endDateTime,id } = req.query;
+
+        const overlappingGuestHouses = await Booking.findAll({
+            where: {
+                HouseId:{
+                    [Op.eq] : id
+                },
+                startDate: {
+                    [Op.lte]: moment(endDateTime.toString()).format("YYYY-MM-DD HH:mm:ss"),
+                },
+                endDate: {
                     [Op.gte]: moment(startDateTime.toString()).format("YYYY-MM-DD HH:mm:ss"),
                 },
             },
@@ -129,9 +162,9 @@ const checkAvailability = async(req, res) => {
 };
 
 module.exports = {
-    createGuestHouse,
-    updateGuestHouse,
-    getGuestHouses,
-    deleteGuestHouse,
+    createHouse,
+    updateHouse,
+    checkAvailabilityHouse,
+    deleteHouse,
     checkAvailability
 };

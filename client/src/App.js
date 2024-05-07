@@ -6,10 +6,11 @@ import {
   createBrowserRouter
 } from "react-router-dom";
 
-import Hai from "./components/Hai";
+import Home from "./components/Home";
 import Login from "./components/Login";
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
 
@@ -37,11 +38,17 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: isLoggedIn ? <Navigate to="/Home" replace /> : <Login handleLogin={handleLogin} />,
+      element: isLoggedIn ? <Navigate to="/home" replace /> : <Login handleLogin={handleLogin} />,
     },
     {
-      path: "Home",
-      element: isLoggedIn ? <Hai /> : <Navigate to="/" replace />,
+      path: "home",
+      element: <PrivateRoute><Home /></PrivateRoute>,
+      children: [
+        { path: "", element: <h1>Welcome to Home</h1>},
+        { path: "complete", element: <h1>Welcome to Home</h1> },
+        { path: "about", element: <h1>About</h1> },
+        { path: "contact", element: <h1>Contact</h1> },
+      ],
     },
   ]);
   return (

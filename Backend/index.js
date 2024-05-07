@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
     res.send("Adya Assesment Backend"); 
 });
 app.use('/user', require('./Routes/user')); 
+app.use('/house',require('./Routes/house'))
 
 app.listen(3001,async () => {
     console.log('Server is running on port 3001');

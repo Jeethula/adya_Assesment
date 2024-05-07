@@ -1,20 +1,19 @@
 const express = require('express');
-const guesthouseroutes = express.Router()
+const houseRoutes = express.Router()
 
-const { createGuestHouse, checkAvailability, getGuestHouses, updateGuestHouse, deleteGuestHouse } = require('../controller/guestHouseController')
+const controller = require('../controller/house')
 
-guesthouseroutes.post('/create', createGuestHouse);
+houseRoutes.post('/create', controller.createHouse);
 
 
 //to get transport form
-
-
-guesthouseroutes.get('/get', getGuestHouses);
+houseRoutes.get('/get', controller.createHouse);
 
 //to update the Transportform
-guesthouseroutes.patch('/update', updateGuestHouse);
-guesthouseroutes.delete('/delete', deleteGuestHouse);
-guesthouseroutes.get('/checkAvailability', checkAvailability)
+houseRoutes.patch('/update', controller.updateHouse);
+houseRoutes.delete('/delete', controller.deleteHouse);
+houseRoutes.get('/checkAvailabiltyForHouse',controller.checkAvailabilityHouse)
+houseRoutes.get('/checkAvailability', controller.checkAvailability)
 
 
-module.exports = guesthouseroutes
+module.exports = houseRoutes
