@@ -25,7 +25,7 @@ const User = sequelize.define("User", {
         type: Sequlize.STRING,
         allowNull: false,
         set(pass) {
-            this.setDataValue('password',pass);
+            this.setDataValue('password',hashed(pass));
         }
 
     }

@@ -42,18 +42,16 @@ const UserLogin = async (req, res) => {
     try {
 
         const { name, password } = req.query;
+
         const user = await User.findOne({ where: { name: name } })
-        console.log(user, "........")
         console.log(user.password);
-        if (password, user.password){
-            res.end(JSON.stringify({ "message": true }))
-        }
-        else{
+        if (checkpass(password, user.password))
+            res.end(JSON.stringify({ "message": true }));
+        else
             res.end(JSON.stringify({ "message": false }));
-        }
 
     } catch (err) {
-        res.status(500).send(JSON.stringify({ "message": "No user found" }));
+        res.status(200).send(JSON.stringify({ "message": "No user found" }));
     }
 }
 
