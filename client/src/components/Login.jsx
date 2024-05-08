@@ -13,7 +13,6 @@ export default function Login({ handleLogin }) {
       alert('Please enter both username and password.');
       return;
     }
-    console.log(username, password,".......")
     handleLogin(username, password);
     setUsername('');
     setPassword('');

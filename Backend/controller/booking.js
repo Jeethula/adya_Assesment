@@ -4,8 +4,8 @@ const  User = require("../model/user");
 
 const createbook = async(req, res) => {
     try {
-        const { userId, houseId, startDateTime, endDateTime } = req.body;
-        const user = await User.findByPk(userId);
+        const { userName, houseId, startDateTime, endDateTime } = req.body;
+        const user = await User.findOne({ where: { name: userName } });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -37,9 +37,20 @@ const getBooking = async (req, res) => {
 
 const getBookingByUser = async (req, res) => {
     try {
-        const userId = req.params.id;
+        const name = req.params.username;
+        const user = await User.findOne({ where: { name } });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const userId = user.id;
         const books = await Booking.findAll({ where: { UserId: userId } });
-        res.status(200).json({ books });
+        // get house details for each booking
+        for (let i = 0; i < books.length; i++) {
+            const houseId = books[i].HouseId;
+            const house = await House.findByPk(houseId);
+            books[i].house = house;
+        }
+       res.status(200).json({ books });
     } catch (error) {
         res.status(500).json({ message: "An error occurred", error: error.message });
     }

@@ -19,8 +19,8 @@ import SignUp from "./components/SignUp";
 
 function App() {
 
-  // axios.defaults.baseURL = 'http://localhost:3001';
-  axios.defaults.baseURL = 'https://adya-assesment.onrender.com';
+   axios.defaults.baseURL = 'http://localhost:3001';
+  //axios.defaults.baseURL = 'https://adya-assesment.onrender.com';
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -32,9 +32,11 @@ function App() {
 
   const handleLogin = async (username, password) => {
     const result = await axios.get('/user/Login',{ params: { name: username, password: password  } })
+    console.log(result,'wdwdwdd')
     if(result.data.message===true){
         setIsLoggedIn(true);
         localStorage.setItem("isLoggedIn", "true");
+        sessionStorage.setItem("username",username);
       }
       else{
         console.log("Login failed");

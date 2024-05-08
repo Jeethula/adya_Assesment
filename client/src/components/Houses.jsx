@@ -15,6 +15,13 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import { setdata } from '../Redux/bookingSlice';
+import { HiOutlineHomeModern } from "react-icons/hi2";
+import { ImLocation2 } from "react-icons/im";
+import { GiReceiveMoney } from "react-icons/gi";
+import { RiMoneyRupeeCircleLine } from "react-icons/ri";
+import { BsFillPersonVcardFill } from "react-icons/bs";
+import { FaPhone } from "react-icons/fa6";
+import { SiTicktick } from "react-icons/si";
 
 const style = {
   position: 'absolute',
@@ -137,11 +144,12 @@ function Houses() {
     }
   };
   
-  const handlebook = async () => {
+  const handlebook = async (ID) => {
     dispatch(setdata(
       {
         startDate: selectedStartDate,
-        endDate: selectedEndDate
+        endDate: selectedEndDate,
+        HouseId: ID
       }
     ))
    bookings && navigate('/home/booking');
@@ -157,23 +165,25 @@ function Houses() {
 
 
   return (
-    <div className='flex p-3'>
-      <div className='w-77% h-screen  overflow-auto flex flex-col gap-y-3 mt-3 ml-3'>
+    <div className='flex p-3 '>
+      <div className='w-77% h-screen  overflow-auto flex flex-col gap-y-3 mt-3 ml-10 '>
         {applyFilters().map(house => (
-          <div key={house.id} className='bg-slate-200 relative rounded-lg flex w-[1000px]'>
+          <div key={house.id} className='bg-slate-100 relative rounded-lg flex w-[1000px]'>
             <div>
-              <img src={house.imgUrl} alt="iamge" className='h-64 w-72' />
+              <img src={house.imgUrl} alt="iamge" className='h-64 w-72 rounded-lg' />
             </div>
-            <div className='flex flex-col p-2  gap-1 '>
+            <div className='flex flex-col p-2 px-5 gap-y-2 '>
               <p className='font-bold text-[25px]'>{house.title}</p>
-              <p className=''> {house.furnishing} <span className='font-semibold'>{house.area} Sq.ft </span> </p>
-              <p className=''>{house.address}</p>
-              <p>Rent :{house.rent}</p>
-              <p>Adavnce :{house.Advance}</p>
-              <p>Owner   : {house.sellerName}</p>
+              <p className='flex items-center gap-x-2'><span className='bg-gray-400 text-white font-semibold p-1 h-fit w-fit rounded-md'> {house.furnishing}</span> <span className='font-medium text-[13px] flex items-center gap-x-1 '><HiOutlineHomeModern /> {house.area} Sq.ft </span> </p>
+              <p className='flex gap-x-2 items-center font-semibold '><ImLocation2 /> {house.address}</p>
+              <div className='bg-white rounded-md p-3 h-fit w-fit mt-2'>
+              <p className='flex gap-x-2 items-center '><RiMoneyRupeeCircleLine /> Rent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;<span className='font-bold'>{house.rent} / Day</span></p>
+              <p className='flex gap-x-2 items-center '><GiReceiveMoney />Adavnce &nbsp;&nbsp;: &nbsp;<span className='font-bold'>{house.Advance}</span></p>
+              <p className='flex gap-x-2 items-center '><BsFillPersonVcardFill />Owner&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   :&nbsp; <span className='font-bold'>{house.sellerName}</span></p>
+              </div>
             </div>
             <h1 className='bg-white  font-bold p-2 absolute rounded-tr-lg z-9 left-0 bottom-0'>Rs {house.rent} / Day</h1>
-            <button className='bg-orange-400 text-white rounded-lg font-semibold p-2 absolute z-9 right-2 bottom-2 ' onClick={handleOpen}>Show More</button>
+            <button className='bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-bold p-2 absolute z-9 right-5 bottom-8  h-fit w-36' onClick={handleOpen}>Show More & Book</button>
             <Modal
               keepMounted
               open={open}
@@ -207,28 +217,30 @@ function Houses() {
                     </LocalizationProvider>
                   </Typography>
                 </div>
-               { !bookings && <button className='w-fit h-fit p-2 mt-2 ml-60 bg-orange-400 rounded-lg hover:bg-orange-500' onClick={()=>handleCheckAvailable(house.id)}>Check Availabity</button> }
-               {  bookings && <p className='text-[15px] ml-60 mt-2 font-semibold bg-green-400 p-1 h-fit w-fit rounded-lg '>The slot is available</p>}
-               { !bookings && <p className='text-[15px] ml-4 font-semibold'>check the  Availableity of your room on the required date to confirm  </p> }
+               { !bookings && <button className='w-fit h-fit p-2 mt-2 ml-60 font-medium bg-orange-400 rounded-lg hover:bg-orange-500' onClick={()=>handleCheckAvailable(house.id)}>Check Availabity</button> }
+               {  bookings && <p className='text-[15px] ml-60 mt-3 font-semibold bg-green-400 p-1 h-fit w-fit rounded-lg flex items-center gap-x-2'>The house is available <SiTicktick /></p>}
+               { !bookings && <p className='text-[15px] ml-16 mt-2 font-semibold'>check the  Availableity of your house on the required date to confirm  </p> }
                { bookings && <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
                   <div className='flex gap-x-2 '>
                     <div className='w-[100%]' >
                       <img src={house.imgUrl} alt="iamge" className='h-72 w-72 rounded-md' />
-                    </div>
-                    <div className='flex flex-col p-2 gap-1 h-72 overflow-auto'>
-                      <p className='font-bold text-[25px]'>{house.title}</p>
+                    </div>                     
+                    <div className='flex flex-col p-2 gap-y-2 h-72 overflow-auto'>
+                     <p className='font-bold text-[25px]'>{house.title}</p>
+                      <p className='flex items-center gap-x-2'><span className='bg-gray-400 text-white font-bold p-1 h-fit w-fit rounded-md'> {house.furnishing}</span> <span className='font-medium text-[13px] flex items-center gap-x-1 '><HiOutlineHomeModern /> {house.area} Sq.ft </span> </p>
                       <p className='text-gray-400'>{house.description}</p>
-                      <p className=''> {house.furnishing} <span className='font-semibold'>{house.area} Sq.ft </span> </p>
-                      <p className=''>{house.address}</p>
-                      <p>Rent :{house.rent}</p>
-                      <p>Adavnce :{house.Advance}</p>
-                      <p>Owner   : {house.sellerName}</p>
-                      <p>Contact : {house.phoneNumber}</p>
+                      <p className='flex gap-x-2 items-center font-semibold '><ImLocation2 /> {house.address}</p>
+                      <p className='flex gap-x-2 items-center font-semibold bg-black text-white h-fit w-fit p-1 rounded-md'><FaPhone /> {house.phoneNumber}</p>
+                      <div className='bg-slate-200 rounded-md p-3 h-fit w-fit mt-2'>
+                      <p className='flex gap-x-2 items-center '><RiMoneyRupeeCircleLine /> Rent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;<span className='font-bold'>{house.rent} / Day</span></p>
+                      <p className='flex gap-x-2 items-center '><GiReceiveMoney />Adavnce &nbsp;&nbsp;: &nbsp;<span className='font-bold'>{house.Advance}</span></p>
+                      <p className='flex gap-x-2 items-center '><BsFillPersonVcardFill />Owner&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   :&nbsp; <span className='font-bold'>{house.sellerName}</span></p>
+                      </div>
                     </div>
                 </div>
                 </Typography>}
                 <div>
-                 {bookings && <button className='bg-orange-400 rounded-lg hover:bg-orange-500 text-white font-semibold p-2 ml-56 mt-3' onClick={handlebook}>Rent now</button> }
+                 {bookings && <button className='bg-orange-500 rounded-lg hover:bg-orange-600 text-white font-semibold p-2 ml-64 mt-3' onClick={()=>handlebook(house.id)}>Rent now</button> }
                 </div>
               </Box>
             </Modal>

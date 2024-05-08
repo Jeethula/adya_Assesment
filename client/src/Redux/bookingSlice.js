@@ -12,9 +12,8 @@ export const bookingSlice = createSlice({
         setdata: (state, action) => {
             state.endDate = action.payload.endDate;
             state.startDate = action.payload.startDate;
-            console.log("hello",state.endDate,"jnljnljnljn")
             // state.UserId = action.payload.UserId;
-            // state.HouseId = action.payload.HouseId;
+            state.HouseId = action.payload.HouseId;
         },
     },
   })
