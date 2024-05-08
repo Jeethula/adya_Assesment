@@ -19,7 +19,8 @@ import SignUp from "./components/SignUp";
 
 function App() {
 
-  axios.defaults.baseURL = 'http://localhost:3001';
+  // axios.defaults.baseURL = 'http://localhost:3001';
+  axios.defaults.baseURL = 'https://adya-assesment.onrender.com';
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
