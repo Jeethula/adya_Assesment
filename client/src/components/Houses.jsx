@@ -321,8 +321,8 @@ const id = useSelector(state => state.booking.id);
                 value={filters.showAvailability}
                 onChange={handleShowAvailabilityChange}
               >
-                <FormControlLabel value="lessThan500" control={<Radio />} label="> 500 sq.ft" />
-                <FormControlLabel value="greaterThan500" control={<Radio />} label="< 500 sq.ft" />
+                <FormControlLabel value="lessThan500" control={<Radio />} label="< 500 sq.ft" />
+                <FormControlLabel value="greaterThan500" control={<Radio />} label="> 500 sq.ft" />
               </RadioGroup>
             </FormControl>
             </div>
