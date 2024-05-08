@@ -1,4 +1,9 @@
 const User = require('../model/user')
+const jwt = require('jsonwebtoken');
+
+const createToken = (name) => {
+    return jwt.sign({ name }, "mnmkjkbkjbkjbknjnl", { expiresIn: '3d' })
+}
 
 const CreateUser = async (req, res) => {
     try {
@@ -7,7 +12,7 @@ const CreateUser = async (req, res) => {
             where: { name },
             defaults: { name, email, password: password }
         });
-
+       
         if (created) {
             return res.status(200).json({message: "success",  user});
         } else {
@@ -35,7 +40,8 @@ const UserLogin = async (req, res) => {
         const { name, password } = req.query;
         const user = await User.findOne({ where: { name: name } })
         if (password, user.password){
-            res.end(JSON.stringify({ "message": true }))
+            const token = createToken(name)
+            res.end(JSON.stringify({ "message": true , token: token , user: user}))
         }
         else{
             res.end(JSON.stringify({ "message": false }));

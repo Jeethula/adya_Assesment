@@ -13,7 +13,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { setdata } from '../Redux/bookingSlice';
 import { HiOutlineHomeModern } from "react-icons/hi2";
 import { ImLocation2 } from "react-icons/im";
@@ -171,6 +171,23 @@ function Houses() {
   navigate("/home/MyBookings");
 }
 
+  const handleDelete = async (Id) => {
+    const response = await axios.delete("/house/delete",{
+      params:{
+        id: Id
+      }
+    });
+    console.log(response.data);
+    if(response.data.message === "House deleted successfully"){
+      const newHouses = houses.filter(house => house.id !== Id);
+      setHouses(newHouses);
+    }else{
+      console.log("error in deleting house")
+    }
+  }
+
+const id = useSelector(state => state.booking.id); 
+
 
   return (
     <div className='flex p-3 '>
@@ -191,6 +208,7 @@ function Houses() {
               </div>
             </div>
             <h1 className='bg-white  font-bold p-2 absolute rounded-tr-lg z-9 left-0 bottom-0'>Rs {house.rent} / Day</h1>
+            {/* { (house.id===id) && <h1 className='absolute z-9 right-0 top-0' onClick={()=>handleDelete(house.id)}>close</h1>} */}
             <button className='bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-bold p-2 absolute z-9 right-5 bottom-8  h-fit w-36' onClick={handleOpen}>Show More & Book</button>
             <Modal
               keepMounted

@@ -3,9 +3,6 @@ const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const sequelize = require("./database");
-const House = require('./model/house');
-const User = require('./model/user');
-const Booking = require('./model/booking');
 
 
 app.use(cors(

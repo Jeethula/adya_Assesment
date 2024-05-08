@@ -43,7 +43,6 @@ const getBookingByUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         const userId = user.id;
-        console.log(userId)
         const books = await Booking.findAll({ where: { UserId: userId } });
        res.status(200).json({ books });
     } catch (error) {

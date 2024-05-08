@@ -6,7 +6,8 @@ export const bookingSlice = createSlice({
         endDate: '',
         startDate: '',
         UserId:'',
-        HouseId:''
+        HouseId:'',
+        id:''
     },
     reducers: {
         setdata: (state, action) => {
@@ -15,9 +16,12 @@ export const bookingSlice = createSlice({
             // state.UserId = action.payload.UserId;
             state.HouseId = action.payload.HouseId;
         },
+        setId : (state, action) => {
+            state.id = action.payload.id;
+        }
     },
   })
   
-   export const { setdata } = bookingSlice.actions
+   export const { setdata,setId } = bookingSlice.actions
   
   export default bookingSlice.reducer

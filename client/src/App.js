@@ -16,6 +16,8 @@ import Rent from "./components/Rent";
 import Booking from "./components/Booking";
 import MyBooking from "./components/MyBooking";
 import SignUp from "./components/SignUp";
+import { useDispatch } from "react-redux";
+import { setId } from "./Redux/bookingSlice";
 
 function App() {
 
@@ -23,6 +25,8 @@ function App() {
   //axios.defaults.baseURL = 'https://adya-assesment.onrender.com';
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
      const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
@@ -35,6 +39,9 @@ function App() {
     console.log(result,'wdwdwdd')
     if(result.data.message===true){
         setIsLoggedIn(true);
+        dispatch(setId({
+          id:result.data.user.id,
+        }))
         localStorage.setItem("isLoggedIn", "true");
         sessionStorage.setItem("username",username);
       }
