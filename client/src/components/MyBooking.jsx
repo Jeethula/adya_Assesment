@@ -1,6 +1,7 @@
 import React from 'react'
 
-function Page() {
+function MyBooking() {
+    
   return (
     <div>
       
@@ -8,4 +9,4 @@ function Page() {
   )
 }
 
-export default Page
+export default MyBooking

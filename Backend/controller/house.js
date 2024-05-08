@@ -5,6 +5,7 @@ const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 const Booking = require('../model/booking');
 
+
 const createHouse = async(req, res) => {
     try {
         const {
@@ -17,17 +18,15 @@ const createHouse = async(req, res) => {
             description,
             imgUrl,
             rent,
-            Advance,
+            advance,
             area,
         } = req.body;
-        const dateFormat = "YYYY-MM-DD HH:mm:ss";
         const user = await User.findOne({ where: { name: userName } });
-    console.log(startDateTime,endDateTime)
         if (!user) {
             res.status(404).json({ message: "User not found" });
             return;
         }
-        const guestHouse = await GuestHouse.create({
+        const house = await House.create({
             sellerName,
             address,
             phoneNumber,
@@ -36,9 +35,9 @@ const createHouse = async(req, res) => {
             description,
             imgUrl,
             rent,
-            Advance,
+            Advance:advance,
             area,
-            id: user.id 
+            UserId: user.id 
         });
 
         res.status(201).json({ message: "House created successfully", House: house });
@@ -47,6 +46,16 @@ const createHouse = async(req, res) => {
         res.status(200).json({ message: "An error occurred", error: error.message });
     }
 };
+
+const getHouses = async (req, res) => {
+    try {
+        const houses = await House.findAll();
+        res.status(200).json({ houses });
+    } catch (error) {
+        res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+};
+
 
 const updateHouse = async (req, res) => {
     try {
@@ -103,10 +112,7 @@ const deleteHouse = async (req, res) => {
 
 const checkAvailability = async(req, res) => {
     try {
-        console.log(req.query);
         const { startDateTime, endDateTime } = req.query;
-        console.log(startDateTime,endDateTime,"...")
-
         const overlappingGuestHouses = await Booking.findAll({
             where: {
                 
@@ -133,7 +139,6 @@ const checkAvailability = async(req, res) => {
 
 const checkAvailabilityHouse = async(req, res) => {
     try {
-        console.log(req.params);
         const { startDateTime, endDateTime,id } = req.query;
 
         const overlappingGuestHouses = await Booking.findAll({
@@ -166,5 +171,6 @@ module.exports = {
     updateHouse,
     checkAvailabilityHouse,
     deleteHouse,
-    checkAvailability
+    checkAvailability,
+    getHouses
 };

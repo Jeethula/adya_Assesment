@@ -11,6 +11,11 @@ import Login from "./components/Login";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import PrivateRoute from "./components/PrivateRoute";
+import Houses from "./components/Houses";
+import Rent from "./components/Rent";
+import Booking from "./components/Booking";
+import MyBooking from "./components/MyBooking";
+import SignUp from "./components/SignUp";
 
 function App() {
 
@@ -41,13 +46,17 @@ function App() {
       element: isLoggedIn ? <Navigate to="/home" replace /> : <Login handleLogin={handleLogin} />,
     },
     {
+      path:"signup",
+      element:<SignUp/>
+    },
+    {
       path: "home",
       element: <PrivateRoute><Home /></PrivateRoute>,
       children: [
-        { path: "", element: <h1>Welcome to Home</h1>},
-        { path: "complete", element: <h1>Welcome to Home</h1> },
-        { path: "about", element: <h1>About</h1> },
-        { path: "contact", element: <h1>Contact</h1> },
+        { path: "", element: <Houses/> },
+        { path: "booking", element: <Booking/>  },
+        { path: "rent", element: <Rent/>},
+        { path: "MyBookings", element: <MyBooking/>},
       ],
     },
   ]);

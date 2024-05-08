@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../database');
-const User = require('./user')
+const User = require('./user');
 
 const House = sequelize.define("House", {
     id: {
@@ -8,9 +8,8 @@ const House = sequelize.define("House", {
         autoIncrement: true,
         allowNull: false,
         primaryKey: true,
-
     },
-   sellerName: {
+    sellerName: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -22,8 +21,8 @@ const House = sequelize.define("House", {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            isNumeric: true,
-            len: [10, 10]
+            isInt: { msg: "Phone number must be numeric" },
+            len: { args: [10, 10], msg: "Phone number must be 10 digits long" }
         },
     },
     furnishing: {
@@ -42,25 +41,26 @@ const House = sequelize.define("House", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    rent:{
+    rent: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    Advance:{
+    Advance: { 
         type: DataTypes.INTEGER,
-        allowNull: false,
     },
-    area:{
+    area: {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    }
 }, {
     tableName: 'house',
 });
 
-// You can add any associations or additional configurations here
-
-// Create the table in the database
 User.hasMany(House);
 House.belongsTo(User);
+
 module.exports = House;

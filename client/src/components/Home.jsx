@@ -1,7 +1,6 @@
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import Navbar from './Navbar';
-import Footer from './Footer';
 
 function Home() {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -15,7 +14,6 @@ function Home() {
         <div className='mt-[60px]'>
             <Outlet/>
         </div>
-
     </div>
   )
 }
