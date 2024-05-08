@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function Rent() {
 
   const username = sessionStorage.getItem("username");
+  const [clicked, setclicked] = useState(false)
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -27,25 +28,31 @@ function Rent() {
   };
 
   const handleSubmit = async (e) => {
+    setclicked(true)
     e.preventDefault();
     console.log(formData);
     const response = await axios.post('/house/create', formData);
     console.log(response.data);
     if(response.data.message === "House created successfully"){
+        setclicked(false)
+        setFormData({
+          sellerName: '',
+          address: '',
+          phoneNumber: '',
+          furnishing: '',
+          title: '',
+          description: '',
+          imgUrl: '',
+          rent: '',
+          advance: '',
+          area: ''
+        });
         navigate('/home');
+    }else{
+      setclicked(false)
+      console.log("error in rent house creation")
     }
-    setFormData({
-      sellerName: '',
-      address: '',
-      phoneNumber: '',
-      furnishing: '',
-      title: '',
-      description: '',
-      imgUrl: '',
-      rent: '',
-      advance: '',
-      area: ''
-    });
+    
   };
 
   return (
@@ -66,7 +73,12 @@ function Rent() {
         </div>
         <div className="w-full md:w-1/2 mb-4 md:pl-2">
           <label className="block mb-2">Furnishing:</label>
-          <input type="text"  name="furnishing" value={formData.furnishing} onChange={handleChange} className="w-full border border-gray-300 rounded p-2" />
+          <select name="furnishing" value={formData.furnishing} onChange={handleChange} className="w-full border border-gray-300 rounded p-2">
+            <option value="">Select furnishing</option>
+            <option value="Furnished">Furnished</option>
+            <option value="Semi-furnished">Semi-furnished</option>
+            <option value="Not-furnished">Not-furnished</option>
+          </select>
         </div>
         <div className="w-full md:w-1/2 mb-4 md:pr-2">
           <label className="block mb-2">Title:</label>
@@ -92,7 +104,7 @@ function Rent() {
           <label className="block mb-2">Area:</label>
           <input type="text" placeholder='total house area in sq.ft' name="area" value={formData.area} onChange={handleChange} className="w-full border border-gray-300 rounded p-2" />
         </div>
-        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-fit">Submit</button>
+        <button type="submit" disabled={clicked} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-fit">Submit</button>
       </form>
     </div>
   );

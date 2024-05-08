@@ -62,6 +62,7 @@ function Houses() {
     }).catch(error => {
       console.error("Error fetching houses:", error);
     });
+    handleResetFilters()
   }, []);
 
   const handleOpen = () => setOpen(true);
@@ -81,30 +82,37 @@ function Houses() {
 
     if (filters.sortByPrice) {
       filteredHouses.sort((a, b) => {
+        const rentA = a.rent; 
+        const rentB = b.rent;
         if (filters.sortByPrice === 'highToLow') {
-          return b.price - a.price;
+          return rentB - rentA;
         } else if (filters.sortByPrice === 'LowToHigh') {
-          return a.price - b.price;
+          return rentA - rentB;
         }
       });
     }
+    
 
-    if (filters.sortByFurnishing) {
-      filteredHouses = filteredHouses.filter(house => house.furnishing === filters.sortByFurnishing);
+    if (filters.sortByFurnishing === 'all') {
+      return filteredHouses;
     }
-
-    if (filters.showAvailability === 'available') {
-      filteredHouses = filteredHouses.filter(house => house.availability === 'available');
+    filteredHouses = filteredHouses.filter(house => house.furnishing === filters.sortByFurnishing);
+    
+    if (filters.showAvailability === 'greaterThan500') {
+      filteredHouses = filteredHouses.filter(house => house.area > 500);
+    } else if (filters.showAvailability === 'lessThan500') {
+      filteredHouses = filteredHouses.filter(house => house.area < 500);
     }
+  
 
     return filteredHouses;
   };
 
   const handleResetFilters = () => {
     setFilters({
-      sortByPrice: null,
-      sortByFurnishing: null,
-      showAvailability: 'notAvailable'
+      sortByPrice: "null",
+      sortByFurnishing: "all",
+      showAvailability: null
     });
   };
 
@@ -259,7 +267,7 @@ function Houses() {
               <RadioGroup
                 className='px-5'
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="null"
+                defaultValue="highToLow"
                 name="sortByPrice"
                 value={filters.sortByPrice}
                 onChange={handleSortByPriceChange}
@@ -274,14 +282,14 @@ function Houses() {
               <RadioGroup
                 className='px-5'
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="null"
+                defaultValue="all"
                 name="sortByFurnishing"
                 value={filters.sortByFurnishing}
                 onChange={handleSortByFurnishingChange}
               >
-                <FormControlLabel value="Fully" control={<Radio />} label="Fully furnished" />
-                <FormControlLabel value="semi" control={<Radio />} label="Semi-furnished" />
-                <FormControlLabel value="null" control={<Radio />} label="Not furnished" />
+                <FormControlLabel value="Furnished" control={<Radio />} label="Fully furnished" />
+                <FormControlLabel value="Semi-furnished" control={<Radio />} label="Semi-furnished" />
+                <FormControlLabel value="Not-furnished" control={<Radio />} label="Not furnished" />
                 <FormControlLabel value="all" control={<Radio />} label="all" />
               </RadioGroup>
             </FormControl>
@@ -290,13 +298,13 @@ function Houses() {
               <RadioGroup
                 className='px-5'
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="notAvailable"
+                defaultValue=""
                 name="showAvailability"
                 value={filters.showAvailability}
                 onChange={handleShowAvailabilityChange}
               >
-                <FormControlLabel value="available" control={<Radio />} label="Show only Available" />
-                <FormControlLabel value="notAvailable" control={<Radio />} label="Show All" />
+                <FormControlLabel value="lessThan500" control={<Radio />} label="> 500 sq.ft" />
+                <FormControlLabel value="greaterThan500" control={<Radio />} label="< 500 sq.ft" />
               </RadioGroup>
             </FormControl>
             </div>
