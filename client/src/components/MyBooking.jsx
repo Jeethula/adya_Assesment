@@ -19,7 +19,7 @@ function MyBooking() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const bookingResponse = await axios.get('/booking/get', { params: { username } });
+        const bookingResponse = await axios.get(`/booking/get/${username} `);
         const bookingData = bookingResponse.data.books;
 
         const houseResponse = await axios.get('/house/get');

@@ -28,15 +28,15 @@ function Navbar({ username }) {
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-blue-500 z-10">
-      <div className="container mx-auto px-2 flex h-16 items-center justify-between">
-        <div className="flex items-center">
+      <div className="container px-3 flex h-16 items-center justify-between">
+        <div className="flex gap-x-5 items-center ">
+          <img className=' h-14 w-14 rounded-[100%]' src="https://cdn1.vectorstock.com/i/1000x1000/82/80/lorem-ipsum-business-logo-template-vector-36328280.jpg" alt="" />
           <span className="text-lg text-white font-bold mr-2">{greeting}, {name}</span>
         </div>
         <div>
           <button className="bg-white font-semibold h-fit w-fit p-2 rounded-md" onClick={handleSignout}>
               Sign out
           </button>
-          <img className='absolute z-10 top-1 left-2 h-14 w-14 rounded-[100%]' src="https://cdn1.vectorstock.com/i/1000x1000/82/80/lorem-ipsum-business-logo-template-vector-36328280.jpg" alt="" />
         </div>
       </div>
     </nav>

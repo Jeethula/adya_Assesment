@@ -43,13 +43,8 @@ const getBookingByUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         const userId = user.id;
+        console.log(userId)
         const books = await Booking.findAll({ where: { UserId: userId } });
-        // get house details for each booking
-        for (let i = 0; i < books.length; i++) {
-            const houseId = books[i].HouseId;
-            const house = await House.findByPk(houseId);
-            books[i].house = house;
-        }
        res.status(200).json({ books });
     } catch (error) {
         res.status(500).json({ message: "An error occurred", error: error.message });

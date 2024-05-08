@@ -225,9 +225,9 @@ function Houses() {
                     </LocalizationProvider>
                   </Typography>
                 </div>
-               { !bookings && <button className='w-fit h-fit p-2 mt-2 ml-60 font-medium bg-orange-400 rounded-lg hover:bg-orange-500' onClick={()=>handleCheckAvailable(house.id)}>Check Availabity</button> }
+               { !bookings && <button className='w-fit h-fit p-2 mt-2 ml-60 font-medium bg-orange-400 rounded-lg hover:bg-orange-500' onClick={()=>handleCheckAvailable(house.id)}>Check Availability</button> }
                {  bookings && <p className='text-[15px] ml-60 mt-3 font-semibold bg-green-400 p-1 h-fit w-fit rounded-lg flex items-center gap-x-2'>The house is available <SiTicktick /></p>}
-               { !bookings && <p className='text-[15px] ml-16 mt-2 font-semibold'>check the  Availableity of your house on the required date to confirm  </p> }
+               { !bookings && <p className='text-[15px] ml-16 mt-2 font-semibold'>check the Availability of your house on the required date to confirm  </p> }
                { bookings && <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
                   <div className='flex gap-x-2 '>
                     <div className='w-[100%]' >

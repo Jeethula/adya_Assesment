@@ -5,7 +5,7 @@ const controller = require('../controller/booking')
 
 bookRoutes.post('/create', controller.createbook);
 bookRoutes.get('/get', controller.getBooking);
-bookRoutes.get('/get/:id', controller.getBookingByUser);
+bookRoutes.get('/get/:username', controller.getBookingByUser);
 
 
 module.exports = bookRoutes
