@@ -22,6 +22,7 @@ function Navbar({ username }) {
 
     const handleSignout = () => {
         localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("token")
         navigate("/");
         window.location.reload();
     }

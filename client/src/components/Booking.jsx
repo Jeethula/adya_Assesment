@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Api from '../Api';
 
 function Booking() {
 
@@ -15,7 +16,7 @@ function Booking() {
   const handlePayment = async (e) => {
     e.preventDefault(); 
     console.log("entering")
-    const result = await axios.post('/booking/create', { userName, houseId, startDateTime, endDateTime })
+    const result = await Api.post('/booking/create', { userName, houseId, startDateTime, endDateTime })
     console.log(result.data)
     if(result.data.message === "Booking created successfully"){
     navigate('/home')
@@ -31,6 +32,9 @@ function Booking() {
         <h1 className="text-3xl font-bold">Rental Application Payment</h1>
         <p className="text-gray-500 dark:text-gray-400">
           Complete your rental application by providing your payment information.
+        </p>
+        <p className="font-medium">
+          Paymet of <span className='font-bold'>Rs 1000</span>  will be deducted from your account. 
         </p>
       </div>
       <div className="mt-6 bg-white rounded-lg shadow-md dark:bg-gray-800">

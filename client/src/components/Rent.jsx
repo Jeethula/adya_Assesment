@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Api from '../Api';
 
 function Rent() {
 
@@ -30,8 +31,23 @@ function Rent() {
   const handleSubmit = async (e) => {
     setclicked(true)
     e.preventDefault();
-    console.log(formData);
-    const response = await axios.post('/house/create', formData);
+    if (formData.sellerName.trim() === '' || formData.address.trim() === '' || formData.phoneNumber.trim() === '' || formData.furnishing.trim() === '' || formData.title.trim() === '' || formData.description.trim() === '' || formData.imgUrl.trim() === '' || formData.rent.trim() === '' || formData.advance.trim() === '' || formData.area.trim() === '') {
+      alert('Complete all the fields.');
+      setclicked(false)
+      return;
+    }
+    if(formData.rent < 0 || formData.advance < 0 || formData.area < 0){
+      alert('Rent, Advance and Area should be positive values');
+      setclicked(false)
+      return;
+    }
+    if(formData.phoneNumber.length !== 10){
+      alert('Phone number should be 10 digits');
+      setclicked(false)
+      return;
+    }
+
+    const response = await Api.post('/house/create', formData);
     console.log(response.data);
     if(response.data.message === "House created successfully"){
         setclicked(false)
@@ -104,7 +120,7 @@ function Rent() {
           <label className="block mb-2">Area:</label>
           <input type="text" placeholder='total house area in sq.ft' name="area" value={formData.area} onChange={handleChange} className="w-full border border-gray-300 rounded p-2" />
         </div>
-        <button type="submit" disabled={clicked} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-fit">Submit</button>
+        <button type="submit"  className={`${clicked ?"bg-gray-400" :"bg-blue-500 hover:bg-blue-600"} text-white font-bold py-2 px-4 rounded w-fit`}>{clicked ?"Submitting" : "Submit"}</button>
       </form>
     </div>
   );

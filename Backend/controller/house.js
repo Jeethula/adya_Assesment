@@ -21,6 +21,8 @@ const createHouse = async(req, res) => {
             advance,
             area,
         } = req.body;
+
+        const ddd= req.UserId;
         const user = await User.findOne({ where: { name: userName } });
         if (!user) {
             res.status(404).json({ message: "User not found" });
@@ -98,7 +100,9 @@ const updateHouse = async (req, res) => {
 const deleteHouse = async (req, res) => {
     try {
         const houseId = req.params.id;
+        console.log(houseId,"jj")
         const house = await House.findByPk(houseId);
+        console.log(house,"jeethu")
         if (!house) {
             return res.status(404).json({ message: "House not found" });
         }

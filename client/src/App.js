@@ -18,11 +18,12 @@ import MyBooking from "./components/MyBooking";
 import SignUp from "./components/SignUp";
 import { useDispatch } from "react-redux";
 import { setId } from "./Redux/bookingSlice";
+import Api from "./Api";
 
 function App() {
 
    //axios.defaults.baseURL = 'http://localhost:3001';
-  axios.defaults.baseURL = 'https://adya-assesment.onrender.com';
+  //axios.defaults.baseURL = 'https://adya-assesment.onrender.com';
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -35,7 +36,7 @@ function App() {
 
 
   const handleLogin = async (username, password) => {
-    const result = await axios.get('/user/Login',{ params: { name: username, password: password  } })
+    const result = await Api.get('/user/Login',{ params: { name: username, password: password  } })
     console.log(result,'wdwdwdd')
     if(result.data.message===true){
         setIsLoggedIn(true);
@@ -43,7 +44,9 @@ function App() {
           id:result.data.user.id,
         }))
         localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("token",result.data.token)
         sessionStorage.setItem("username",username);
+        sessionStorage.setItem("id",result.data.user.id);
       }
       else{
         console.log("Login failed");

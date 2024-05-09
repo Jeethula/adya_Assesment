@@ -9,6 +9,7 @@ import { FaHistory } from "react-icons/fa";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaPersonWalkingArrowRight } from "react-icons/fa6";
 import { FaPersonWalkingArrowLoopLeft } from "react-icons/fa6";
+import Api from '../Api';
 
 
 function MyBooking() {
@@ -19,10 +20,10 @@ function MyBooking() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const bookingResponse = await axios.get(`/booking/get/${username} `);
+        const bookingResponse = await Api.get(`/booking/get/${username} `);
         const bookingData = bookingResponse.data.books;
 
-        const houseResponse = await axios.get('/house/get');
+        const houseResponse = await Api.get('/house/get');
         const houseData = houseResponse.data.houses;
 
         setBookings(bookingData);

@@ -4,6 +4,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Api from '../Api';
 
 export default function SignUp() {
 
@@ -16,6 +17,7 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); 
+
     if(password !== confirmPassword){
         alert('Passwords do not match');
         return;
@@ -24,8 +26,13 @@ export default function SignUp() {
       alert('Complete all the fields.');
       return;
     }
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+      return;
+    }
     try{
-        const response = await axios.post('/user/create',{
+        const response = await Api.post('/user/create',{
             name: username,
             email: email,
             password: password

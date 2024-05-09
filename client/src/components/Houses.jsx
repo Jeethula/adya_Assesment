@@ -22,6 +22,8 @@ import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import { FaPhone } from "react-icons/fa6";
 import { SiTicktick } from "react-icons/si";
+import Api from '../Api';
+import CircleLoader from "react-spinners/ClipLoader";
 
 const style = {
   position: 'absolute',
@@ -55,15 +57,18 @@ function Houses() {
   const [open, setOpen] = React.useState(false);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
-    axios.get("/house/get").then((res) => {
+    Api.get("/house/get").then((res) => {
       setHouses(res.data.houses); 
+      setLoading(false)
     }).catch(error => {
       console.error("Error fetching houses:", error);
+      setLoading(true)
     });
     handleResetFilters()
-  }, []);
+  }, [loading]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -135,7 +140,7 @@ function Houses() {
       setBookings(false)
       return;
     }
-    const response = await axios.get('/house/checkAvailability', {
+    const response = await Api.get('/house/checkAvailability', {
       params: {
         startDateTime: selectedStartDate,
         endDateTime: selectedEndDate,
@@ -172,11 +177,10 @@ function Houses() {
 }
 
   const handleDelete = async (Id) => {
-    const response = await axios.delete("/house/delete",{
-      params:{
-        id: Id
-      }
-    });
+    console.log("clicked",Id)
+    const id = Id;
+    const response = await Api.delete(`/house/delete/${id}`);
+
     console.log(response.data);
     if(response.data.message === "House deleted successfully"){
       const newHouses = houses.filter(house => house.id !== Id);
@@ -189,7 +193,21 @@ function Houses() {
 const id = useSelector(state => state.booking.id); 
 
 
+
   return (
+    <div className={`${ loading ? "flex flex-col justify-center items-center h-screen" : ""}`}>
+    {loading ? (
+       <div className='flex flex-col justify-center items-center  gap-10 '>
+        <CircleLoader
+          color='#000ff'
+          loading={loading}
+          size={150}
+          aria-label="Loading "
+          data-testid="loader"
+        />
+        <h1>Loading..</h1>
+     </div>
+    ) : (
     <div className='flex p-3 '>
       <div className='w-77% h-screen  overflow-auto flex flex-col gap-y-3 mt-3 ml-10 '>
         {applyFilters().map(house => (
@@ -208,7 +226,7 @@ const id = useSelector(state => state.booking.id);
               </div>
             </div>
             <h1 className='bg-white  font-bold p-2 absolute rounded-tr-lg z-9 left-0 bottom-0'>Rs {house.rent} / Day</h1>
-            {/* { (house.id===id) && <h1 className='absolute z-9 right-0 top-0' onClick={()=>handleDelete(house.id)}>close</h1>} */}
+            { (house.UserId == sessionStorage.getItem('id')) && <h1 className='absolute z-9 right-5 top-2 bg-red-500 hover:bg-red-600 rounded-md h-fit w-fit p-2 text-white font-bold' onClick={()=>handleDelete(house.id)}>Delete Post</h1>}
             <button className='bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-bold p-2 absolute z-9 right-5 bottom-8  h-fit w-36' onClick={handleOpen}>Show More & Book</button>
             <Modal
               keepMounted
@@ -328,6 +346,7 @@ const id = useSelector(state => state.booking.id);
             </div>
         </aside>
 
+    </div>)}
     </div>
   );
 }

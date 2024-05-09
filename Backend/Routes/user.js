@@ -1,6 +1,6 @@
 const express = require('express');
 const userRoutes = express.Router()
-const { CreateUser, updateUser, UserLogin } = require('../controller/user')
+const { CreateUser, updateUser, UserLogin } = require('../controller/user');
 
 userRoutes.post('/create', CreateUser);
 userRoutes.patch('/update', updateUser)
