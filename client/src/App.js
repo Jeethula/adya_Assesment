@@ -21,8 +21,8 @@ import { setId } from "./Redux/bookingSlice";
 
 function App() {
 
-   axios.defaults.baseURL = 'http://localhost:3001';
-  //axios.defaults.baseURL = 'https://adya-assesment.onrender.com';
+   //axios.defaults.baseURL = 'http://localhost:3001';
+  axios.defaults.baseURL = 'https://adya-assesment.onrender.com';
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
